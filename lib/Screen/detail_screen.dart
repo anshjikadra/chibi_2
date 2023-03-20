@@ -1,3 +1,4 @@
+import 'package:chibi_2/ads/ads.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'home_Screen.dart';
@@ -62,18 +63,18 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff8376D0),
+        backgroundColor: const Color(0xff8376D0),
         title: Text(
           "${widget.tittle}",
-          style: TextStyle(
+          style: const TextStyle(
               fontWeight: FontWeight.bold, fontSize: 21, fontFamily: "ReBold"),
         ),
         leadingWidth: 35,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Ads.showInterstititalAd(context);
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         centerTitle: false,
         elevation: 0,
         actions: [
@@ -90,7 +91,7 @@ class _DetailScreenState extends State<DetailScreen> {
               });
             },
             child: Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
                 width: 36,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -100,11 +101,11 @@ class _DetailScreenState extends State<DetailScreen> {
                   like.contains(widget.tittle)
                       ? Icons.favorite
                       : Icons.favorite_border,
-                  color: Color(0xffFF2D54),
+                  color: const Color(0xffFF2D54),
                   size: 26,
                 ))),
           ),
-          SizedBox(
+          const SizedBox(
             width: 15,
           )
         ],
@@ -112,39 +113,24 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Container(
         child: Column(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height - 210,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    steps == 10
-                        ? "assets/images/Steps/${widget.cimage}"
-                        : "assets/images/Steps/${widget.imagedata}${steps}.png",
-                    fit: BoxFit.cover,
-                  ),
-
-                  // CachedNetworkImage(
-                  //   imageUrl:
-                  //       "${BASE_URL}/images/steps/${stepdata[steps].image}",
-                  //   progressIndicatorBuilder:
-                  //       (context, url, downloadProgress) => Center(
-                  //     child: CircularProgressIndicator(
-                  //         value: downloadProgress.progress),
-                  //   ),
-                  //   fit: BoxFit.cover,
-                  //   errorWidget: (context, url, error) =>
-                  //       Icon(Icons.error),
-                  // ),
-                ],
+            const BannerAdWidget(),
+            const Spacer(),
+            Expanded(
+              flex: 5,
+              child: Image.asset(
+                steps == 10
+                    ? "assets/images/Steps/${widget.cimage}"
+                    : "assets/images/Steps/${widget.imagedata}${steps}.png",
+                fit: BoxFit.cover,
               ),
             ),
+            const Spacer(),
             Container(
-              margin: EdgeInsets.only(left: 40, right: 40, bottom: 35),
+              margin: const EdgeInsets.only(left: 40, right: 40, bottom: 35),
               height: 70,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Color(0xffECECEC)),
+                  color: const Color(0xffECECEC)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -158,9 +144,9 @@ class _DetailScreenState extends State<DetailScreen> {
                       height: 45,
                       width: 80,
                       decoration: BoxDecoration(
-                          color: Color(0xff25223E),
+                          color: const Color(0xff25223E),
                           borderRadius: BorderRadius.circular(8)),
-                      child: Center(
+                      child: const Center(
                         child: Icon(
                           Icons.arrow_back,
                           size: 32,
@@ -173,14 +159,14 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 45,
                     width: 80,
                     decoration: BoxDecoration(
-                        color: Color(0xff25223E),
+                        color: const Color(0xff25223E),
                         borderRadius: BorderRadius.circular(8)),
                     child: Center(
                         child: Text(
                       "Steps\n${steps}/${widget.timage}",
                       // "Steps\n${steps + 1}/${stepdata.length}",
-                      style:
-                          TextStyle(color: Colors.white, fontFamily: "Regular"),
+                      style: const TextStyle(
+                          color: Colors.white, fontFamily: "Regular"),
                       textAlign: TextAlign.center,
                     )),
                   ),
@@ -205,9 +191,9 @@ class _DetailScreenState extends State<DetailScreen> {
                       height: 45,
                       width: 80,
                       decoration: BoxDecoration(
-                          color: Color(0xff25223E),
+                          color: const Color(0xff25223E),
                           borderRadius: BorderRadius.circular(8)),
-                      child: Center(
+                      child: const Center(
                         child: Icon(
                           Icons.arrow_forward,
                           size: 32,

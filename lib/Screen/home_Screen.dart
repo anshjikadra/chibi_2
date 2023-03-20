@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chibi_2/Model/jmodel.dart';
-import 'package:chibi_2/database/create_model.dart';
+import 'package:chibi_2/ads/ads.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// import 'package:tying_knots/Screen/detail_screen.dart';
-import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import 'detail_screen.dart';
@@ -34,7 +29,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int id = 0;
   bool isload = false;
   bool isloadmore = false;
@@ -47,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int selected = 0;
 
   List colorlist = [
-    Color(0xff9E896F),
-    Color(0xff5D747B),
-    Color(0xff67618E),
-    Color(0xff8E618A),
-    Color(0xff7D8E61),
+    const Color(0xff9E896F),
+    const Color(0xff5D747B),
+    const Color(0xff67618E),
+    const Color(0xff8E618A),
+    const Color(0xff7D8E61),
   ];
 
   int isSelectd = 0;
@@ -80,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
 
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     get_data();
     isIpad();
     getUserfontsize();
@@ -144,15 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 2,
       initialIndex: 0,
       child: Scaffold(
+        bottomNavigationBar: const BannerAdWidget(),
         endDrawer: Drawer(
           child: Container(
-              padding: EdgeInsets.only(left: 0),
+              padding: const EdgeInsets.only(left: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 15, top: 30),
-                    color: Color(0xff8376D0),
+                    padding: const EdgeInsets.only(left: 15, top: 30),
+                    color: const Color(0xff8376D0),
                     height: 210,
                     child: Row(
                       children: [
@@ -163,12 +160,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 100,
                               width: 100,
                             )),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Text(
                           "$APPNAME",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -177,12 +174,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       InkWell(
@@ -194,12 +191,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.home,
                                 size: 28,
                                 color: Colors.grey,
                               ),
-                              Text(
+                              const Text(
                                 "Home",
                                 style: TextStyle(
                                     fontSize: 21,
@@ -212,12 +209,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       InkWell(
@@ -231,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             actionsBuilder: (context, stars) {
                               return [
                                 ElevatedButton(
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                   onPressed: () async {
                                     print('Thanks for the ' +
                                         (stars == null
@@ -267,12 +264,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.star_rate,
                                 size: 28,
                                 color: Colors.grey,
                               ),
-                              Text(
+                              const Text(
                                 "Rate Us",
                                 style: TextStyle(
                                     fontSize: 21,
@@ -285,12 +282,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       InkWell(
@@ -302,12 +299,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.share,
                                 size: 28,
                                 color: Colors.grey,
                               ),
-                              Text(
+                              const Text(
                                 "Share App",
                                 style: TextStyle(
                                     fontSize: 21,
@@ -320,12 +317,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       InkWell(
@@ -343,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 28,
                                 color: Colors.grey,
                               ),
-                              Text(
+                              const Text(
                                 "More App",
                                 style: TextStyle(
                                     fontSize: 21,
@@ -356,17 +353,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
               )),
         ),
         appBar: AppBar(
-          backgroundColor: Color(0xff8376D0),
+          backgroundColor: const Color(0xff8376D0),
           title: Text(
             "$APPNAME",
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 21,
                 fontFamily: "ReBold"),
@@ -386,18 +383,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }),
-            SizedBox(
+            const SizedBox(
               width: 15,
             )
           ],
           bottom: TabBar(
-            labelStyle: TextStyle(
+            labelStyle: const TextStyle(
                 fontSize: 18,
                 fontFamily: "Regular",
                 fontWeight: FontWeight.w400),
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
-            labelPadding: EdgeInsets.symmetric(vertical: 9),
+            labelPadding: const EdgeInsets.symmetric(vertical: 9),
             indicatorColor: Colors.transparent,
             onTap: (int index) async {
               setState(() {
@@ -410,22 +407,26 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             tabs: [
               Container(
-                  margin: EdgeInsets.only(left: 15),
+                  margin: const EdgeInsets.only(left: 15),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: id == 0 ? Color(0xffFF2D54) : Colors.transparent),
+                      color: id == 0
+                          ? const Color(0xffFF2D54)
+                          : Colors.transparent),
                   height: 38,
                   width: 105,
-                  child: Tab(
+                  child: const Tab(
                     text: "Discover",
                   )),
               Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: id == 1 ? Color(0xffFF2D54) : Colors.transparent),
+                      color: id == 1
+                          ? const Color(0xffFF2D54)
+                          : Colors.transparent),
                   height: 38,
                   width: 105,
-                  child: Tab(
+                  child: const Tab(
                     text: "Favourite",
                   )),
             ],
@@ -435,11 +436,11 @@ class _HomeScreenState extends State<HomeScreen> {
             stream: streamGet.stream,
             builder: (context, snapshot) {
               return TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   //  ---------- Basic -------------
                   Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         left: 15, right: 15, top: 20, bottom: 18),
                     child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -465,7 +466,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               //passing data titalli
                             },
                             child: Container(
-                              padding: EdgeInsets.only(left: 15, right: 15),
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
                               decoration: BoxDecoration(
                                   color: colorlist[index % colorlist.length],
                                   borderRadius: BorderRadius.circular(10)),
@@ -484,13 +486,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width: 200,
                                           child: Text(
                                             "${titalans[index].title}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: "ReBold"),
                                           )),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15,
                                       ),
                                       Row(
@@ -501,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
-                                                color: Color(0xffD9D9D9)),
+                                                color: const Color(0xffD9D9D9)),
                                             child: Center(
                                                 child: Text(
                                               "${titalans[index].totalImage} steps",
@@ -512,19 +514,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   fontWeight: FontWeight.w700),
                                             )),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           InkWell(
                                             onTap: () async {
                                               setState(() {
-                                                if (like.contains('${titalans[index].title}'))
-                                                {
+                                                if (like.contains(
+                                                    '${titalans[index].title}')) {
                                                   like.remove(
                                                       titalans[index].title);
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                   like.add(
                                                       titalans[index].title);
                                                 }
@@ -538,7 +538,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  color: Color(0xffFFFFFF)
+                                                  color: const Color(0xffFFFFFF)
                                                       .withOpacity(0.44)),
                                               child: Center(
                                                 child: Icon(
@@ -546,7 +546,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           titalans[index].title)
                                                       ? Icons.favorite
                                                       : Icons.favorite_border,
-                                                  color: Color(0xffFF2D54),
+                                                  color:
+                                                      const Color(0xffFF2D54),
                                                   size: 28,
                                                 ),
                                               ),
@@ -575,10 +576,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   //  ---------- Favourite ----------
                   Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         left: 15, right: 15, top: 20, bottom: 18),
                     child: like == ""
-                        ? Center(
+                        ? const Center(
                             child: Text(
                               "Data not found",
                               style: TextStyle(fontSize: 22),
@@ -607,7 +608,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               timage: titalans[i].totalImage)));
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.only(left: 15, right: 15),
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
                                   decoration: BoxDecoration(
                                       color:
                                           colorlist[index % colorlist.length],
@@ -630,13 +632,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: Text(
                                                 titalans[i].title,
                                                 // book_mark[index].save_bookmark,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 20,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "ReBold"),
                                               )),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 15,
                                           ),
                                           Row(
@@ -648,7 +650,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             50),
-                                                    color: Color(0xffD9D9D9)),
+                                                    color: const Color(
+                                                        0xffD9D9D9)),
                                                 child: Center(
                                                     child: Text(
                                                   "${titalans[i].totalImage} steps",
@@ -660,7 +663,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           FontWeight.w700),
                                                 )),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               InkWell(
@@ -676,9 +679,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      color: Color(0xffFFFFFF)
+                                                      color: const Color(
+                                                              0xffFFFFFF)
                                                           .withOpacity(0.44)),
-                                                  child: Center(
+                                                  child: const Center(
                                                     child: Icon(
                                                       Icons.favorite,
                                                       color: Color(0xffFF2D54),
@@ -722,6 +726,21 @@ class _HomeScreenState extends State<HomeScreen> {
     if (info.model!.toLowerCase() == "ipad") {
       ipad = true;
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    bool isPaused = state == AppLifecycleState.paused;
+    if (isPaused) {
+      Ads.loadAppOpenAd();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance!.removeObserver(this);
   }
 }
 
