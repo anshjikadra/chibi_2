@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-String APPNAME = "How to Draw Chibi";
+String APPNAME = "How to Draw People";
 String SHARE_APP = "https://apps.apple.com/us/app/how-to-knot/id1668963590";
 String MORE_APP = "itms-apps://apps.apple.com/us/developer/jasmatbhai-satashiya/id1656353988";
 

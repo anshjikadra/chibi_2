@@ -601,11 +601,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => DetailScreen(
-                                              imagedata: titalans[index].prefix,
-                                              tittle: titalans[index].title,
-                                              cimage: titalans[index].cover,
-                                              timage:
-                                                  titalans[index].totalImage)));
+                                              imagedata: titalans[i].prefix,
+                                              tittle: titalans[i].title,
+                                              cimage: titalans[i].cover,
+                                              timage: titalans[i].totalImage)));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(left: 15, right: 15),
